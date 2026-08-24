@@ -419,6 +419,15 @@ local function stepsRobotics()
         function() teleportAndTouch(T.Purchases["Lemon Robotics"].Buttons.Multiplier["Military Contracts"].Button, "Military Contracts") end,
         function() teleportAndTouch(T.Purchases["Lemon Robotics"].Buttons.Structure["Robotics Lot Extension"].Button, "Robotics Lot Extension") end,
         function() teleportAndTouch(T.Purchases["Lemon Robotics"].Buttons.Multiplier["Overseas Production"].Button, "Overseas Production") end,
+        function() teleportAndTouch(T.Purchases["Lemon Robotics"].Buttons.Multiplier["Cyber Lemons"].Button, "Cyber Lemons") end,
+        function() teleportAndTouch(T.Purchases["Lemon Robotics"].Buttons.Multiplier["Growable Batteries"].Button, "Growable Batteries") end,
+        function() teleportAndTouch(T.Purchases["Lemon Robotics"].Buttons.Structure["Robotics Balcony 2"].Button, "Robotics Balcony 2") end,
+        function() teleportAndTouch(T.Purchases["Lemon Robotics"].Buttons.Multiplier["Vertical Integration"].Button, "Vertical Integration") end,
+        function() teleportAndTouch(T.Purchases["Lemon Robotics"].Buttons.Multiplier["Sun Exposure"].Button, "Sun Exposure") end,
+        function() teleportAndTouch(T.Purchases["Lemon Robotics"].Buttons.Structure["Robotics Second Floor Trim"].Button, "Robotics Second Floor Trim") end,
+        function() teleportAndTouch(T.Purchases["Lemon Robotics"].Buttons.Structure["Robotics Second Floor Walls"].Button, "Robotics Second Floor Walls") end,
+        function() teleportAndTouch(T.Purchases["Lemon Robotics"].Buttons.Structure["Robotics Roof"].Button, "Robotics Roof") end,
+        function() teleportAndTouch(T.Purchases["Lemon Robotics"].Buttons.Multiplier["Robotics Exterior Signs"].Button, "Robotics Exterior Signs") end,
     }
 end
 
@@ -445,6 +454,8 @@ local function stepsRepublic()
         function() teleportAndTouch(T.Purchases["Lemon Republic"].Buttons.Structure["Republic Building 2"].Button, "Republic Building 2") end,
         function() teleportAndTouch(T.Purchases["Lemon Republic"].Buttons.Structure["Republic Utility Lot"].Button, "Republic Utility Lot") end,
         function() teleportAndTouch(T.Purchases["Lemon Republic"].Buttons.Multiplier["Public Citrus Works"].Button, "Public Citrus Works") end,
+        function() teleportAndTouch(T.Purchases["Lemon Republic"].Buttons.Structure["Republic Building 4"].Button, "Republic Building 4") end,
+        function() teleportAndTouch(T.Purchases["Lemon Republic"].Buttons.Multiplier["Lifelong Terms"].Button, "Lifelong Terms") end,
     }
 end
 
