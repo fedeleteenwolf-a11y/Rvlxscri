@@ -11,7 +11,7 @@ local function createGui()
     gui.Parent = localPlayer.PlayerGui
 
     local frame = Instance.new("Frame")
-    frame.Size = UDim2.new(0, 280, 0, 280)
+    frame.Size = UDim2.new(0, 280, 0, 340)
     frame.Position = UDim2.new(0.5, -140, 0, 20)
     frame.BackgroundColor3 = Color3.fromRGB(26, 26, 26)
     frame.BorderSizePixel = 0
@@ -176,6 +176,8 @@ local function createGui()
     local completeAllBtn = makeBtn("Complete All Lemons", Color3.fromRGB(50, 35, 10))
     makeSep()
     local upgStandBg,    upgStandKnob,    upgStandBtn    = makeToggleRow("Upgrade Lemon Stand")
+    local upgDashBg,     upgDashKnob,     upgDashBtn     = makeToggleRow("Upgrade Lemon Dash")
+    local upgDepotBg,    upgDepotKnob,    upgDepotBtn    = makeToggleRow("Upgrade Lemon Depot")
     local upgRoboticsBg, upgRoboticsKnob, upgRoboticsBtn = makeToggleRow("Upgrade Lemon Robotics")
     local upgRepBg,      upgRepKnob,      upgRepBtn      = makeToggleRow("Upgrade Lemon Republic")
     makeSep()
@@ -204,20 +206,24 @@ local function createGui()
 
     return frame, dot,
         completeAllBtn,
-        upgStandBg, upgStandKnob, upgStandBtn,
+        upgStandBg,    upgStandKnob,    upgStandBtn,
+        upgDashBg,     upgDashKnob,     upgDashBtn,
+        upgDepotBg,    upgDepotKnob,    upgDepotBtn,
         upgRoboticsBg, upgRoboticsKnob, upgRoboticsBtn,
-        upgRepBg, upgRepKnob, upgRepBtn,
-        autoEatBg, autoEatKnob, autoEatBtn,
+        upgRepBg,      upgRepKnob,      upgRepBtn,
+        autoEatBg,     autoEatKnob,     autoEatBtn,
         autoHarvestBg, autoHarvestKnob, autoHarvestBtn,
         statusLbl, minBtn, closeBtn
 end
 
 local frame, dot,
     completeAllBtn,
-    upgStandBg, upgStandKnob, upgStandBtn,
+    upgStandBg,    upgStandKnob,    upgStandBtn,
+    upgDashBg,     upgDashKnob,     upgDashBtn,
+    upgDepotBg,    upgDepotKnob,    upgDepotBtn,
     upgRoboticsBg, upgRoboticsKnob, upgRoboticsBtn,
-    upgRepBg, upgRepKnob, upgRepBtn,
-    autoEatBg, autoEatKnob, autoEatBtn,
+    upgRepBg,      upgRepKnob,      upgRepBtn,
+    autoEatBg,     autoEatKnob,     autoEatBtn,
     autoHarvestBg, autoHarvestKnob, autoHarvestBtn,
     statusLbl, minBtn, closeBtn = createGui()
 
@@ -226,7 +232,7 @@ local function setDot(on)
     dot.BackgroundColor3 = on and Color3.fromRGB(59, 109, 17) or Color3.fromRGB(80, 80, 80)
 end
 
-local FULL_HEIGHT = 280
+local FULL_HEIGHT  = 340
 local COLLAPSED_HEIGHT = 52
 local collapsed = false
 
@@ -240,7 +246,7 @@ end)
 
 -- ===================== TROVA TYCOON =====================
 local function findMyTycoon()
-    for i = 1, 10 do
+    for i = 1, 20 do
         local tycoon = workspace:FindFirstChild("Tycoon" .. i)
         if tycoon then
             local owner = tycoon:FindFirstChild("Owner")
@@ -268,6 +274,8 @@ setStatus("")
 local T = myTycoon
 
 local upgradeStandOn    = false
+local upgradeDashOn     = false
+local upgradeDepotOn    = false
 local upgradeRoboticsOn = false
 local upgradeRepOn      = false
 local autoEatOn         = false
@@ -275,6 +283,8 @@ local autoHarvestOn     = false
 
 closeBtn.MouseButton1Click:Connect(function()
     upgradeStandOn    = false
+    upgradeDashOn     = false
+    upgradeDepotOn    = false
     upgradeRoboticsOn = false
     upgradeRepOn      = false
     autoEatOn         = false
@@ -328,6 +338,13 @@ local function stepsDash()
         function() teleportAndTouch(T.Purchases.LemonDash.Buttons.Multiplier["LemonDash Plus"].Button, "LemonDash Plus") end,
         function() teleportAndTouch(T.Purchases.LemonDash.Buttons.Multiplier["Dash Exterior Sign"].Button, "Dash Exterior Sign") end,
         function() teleportAndTouch(T.Purchases.LemonDash.Buttons.Multiplier.Tips.Button, "Tips") end,
+        function() teleportAndTouch(T.Purchases.LemonDash.Buttons.Multiplier["Express Delivery"].Button, "Express Delivery") end,
+        function() teleportAndTouch(T.Purchases.LemonDash.Buttons.Multiplier["Mobile App"].Button, "Mobile App") end,
+        function() teleportAndTouch(T.Purchases.LemonDash.Buttons.Multiplier["Special Deals"].Button, "Special Deals") end,
+        function() teleportAndTouch(T.Purchases.LemonDash.Buttons.Multiplier["Rewards Points"].Button, "Rewards Points") end,
+        function() teleportAndTouch(T.Purchases.LemonDash.Buttons.Multiplier["Influencer Collabs"].Button, "Influencer Collabs") end,
+        function() teleportAndTouch(T.Purchases.LemonDash.Buttons.Multiplier["Drone Delivery"].Button, "Drone Delivery") end,
+        function() teleportAndTouch(T.Purchases.LemonDash.Buttons.Other["Dash Manager"].Button, "Dash Manager") end,
     }
 end
 
@@ -357,6 +374,10 @@ local function stepsDepot()
         function() teleportAndTouch(T.Purchases["Lemon Depot"].Buttons.Multiplier["Depot Exterior Sign"].Button, "Depot Exterior Sign") end,
         function() teleportAndTouch(T.Purchases["Lemon Depot"].Buttons.Multiplier["Truck Branding"].Button, "Truck Branding") end,
         function() teleportAndTouch(T.Purchases["Lemon Depot"].Buttons.Multiplier["Lemon Commercials"].Button, "Lemon Commercials") end,
+        function() teleportAndTouch(T.Purchases["Lemon Depot"].Buttons.Other["Depot Manager"].Button, "Depot Manager") end,
+        function() teleportAndTouch(T.Purchases["Lemon Depot"].Buttons.Multiplier.Turbochargers.Button, "Turbochargers") end,
+        function() teleportAndTouch(T.Purchases["Lemon Depot"].Buttons.Multiplier["Self-Driving Trucks"].Button, "Self-Driving Trucks") end,
+        function() teleportAndTouch(T.Purchases["Lemon Depot"].Buttons.Multiplier["Citrus Fuel Lines"].Button, "Citrus Fuel Lines") end,
     }
 end
 
@@ -490,7 +511,6 @@ local function stepsRepublic()
         function() teleportAndTouch(T.Purchases["Lemon Republic"].Buttons.Multiplier["Lifelong Terms"].Button, "Lifelong Terms") end,
         function() teleportAndTouch(T.Purchases["Lemon Republic"].Buttons.Structure["Republic Floor 2 Walls"].Button, "Republic Floor 2 Walls") end,
         function() teleportAndTouch(T.Purchases["Lemon Republic"].Buttons.Structure["Republic Floor 3 Staircase 1"].Button, "Republic Floor 3 Staircase 1") end,
-        function() teleportAndTouch(T.Purchases["Lemon Republic"].Buttons.Structure["Republic Floor 3"].Button, "Republic Floor 3") end,
         function() teleportAndTouch(T.Purchases["Lemon Republic"].Buttons.Multiplier["Centralized Power"].Button, "Centralized Power") end,
         function() teleportAndTouch(T.Purchases["Lemon Republic"].Buttons.Structure["Republic Rear Pillar 1"].Button, "Republic Rear Pillar 1") end,
         function() teleportAndTouch(T.Purchases["Lemon Republic"].Buttons.Structure["Republic Rear Pillar 2"].Button, "Republic Rear Pillar 2") end,
@@ -505,19 +525,65 @@ local function stepsRepublic()
     }
 end
 
+local function stepsLemonX()
+    return {
+        function() teleportAndTouch(T.Purchases["LemonX Ground"].Buttons.Structure["X Launchpad"].Button, "X Launchpad") end,
+        function() teleportAndTouch(T.Purchases["LemonX Ground"].Buttons.Structure["X Scaffolding 1"].Button, "X Scaffolding 1") end,
+        function() teleportAndTouch(T.Purchases["LemonX Ground"].Buttons.Structure["X Scaffolding 2"].Button, "X Scaffolding 2") end,
+        function() teleportAndTouch(T.Purchases["LemonX Ground"].Buttons.Structure["X Scaffolding 3"].Button, "X Scaffolding 3") end,
+        function() teleportAndTouch(T.Purchases["LemonX Ground"].Buttons.Structure["X Scaffolding 4"].Button, "X Scaffolding 4") end,
+        function() teleportAndTouch(T.Purchases["LemonX Ground"].Buttons.Structure["X Control Lights"].Button, "X Control Lights") end,
+        function() teleportAndTouch(T.Purchases["LemonX Ground"].Buttons.Structure["X Launch Surface"].Button, "X Launch Surface") end,
+        function() teleportAndTouch(T.Purchases["LemonX Ground"].Buttons.Structure["X Rocket Lift"].Button, "X Rocket Lift") end,
+        function() teleportAndTouch(T.Purchases["LemonX Ground"].Buttons.Structure["X Rocket Thruster 1"].Button, "X Rocket Thruster 1") end,
+        function() teleportAndTouch(T.Purchases["LemonX Ground"].Buttons.Structure["X Rocket Thruster 2"].Button, "X Rocket Thruster 2") end,
+        function() teleportAndTouch(T.Purchases["LemonX Ground"].Buttons.Structure["X Rocket Thruster 3"].Button, "X Rocket Thruster 3") end,
+        function() teleportAndTouch(T.Purchases["LemonX Ground"].Buttons.Structure["X Rocket Body"].Button, "X Rocket Body") end,
+        function() teleportAndTouch(T.Purchases.LemonX.Buttons.LemonX.Button, "LemonX") end,
+        function() teleportAndTouch(T.Purchases.LemonX.Buttons.Structure["X Floor"].Button, "X Floor") end,
+        function() teleportAndTouch(T.Purchases.LemonX.Buttons.Other["X Manager"].Button, "X Manager") end,
+        function() teleportAndTouch(T.Purchases.LemonX.Buttons.Multiplier["Alien Negotiators"].Button, "Alien Negotiators") end,
+        function() teleportAndTouch(T.Purchases.LemonX.Buttons.Multiplier["Lemon Cryo Storage"].Button, "Lemon Cryo Storage") end,
+        function() teleportAndTouch(T.Purchases.LemonX.Buttons.Structure["X Wall Base"].Button, "X Wall Base") end,
+        function() teleportAndTouch(T.Purchases.LemonX.Buttons.Structure["X Walls 1"].Button, "X Walls 1") end,
+        function() teleportAndTouch(T.Purchases.LemonX.Buttons.Structure["X Airlock 1"].Button, "X Airlock 1") end,
+        function() teleportAndTouch(T.Purchases.LemonX.Buttons.Structure["X Lift 2"].Button, "X Lift 2") end,
+        function() teleportAndTouch(T.Purchases.LemonX.Buttons.Multiplier["Lemon Teleportation"].Button, "Lemon Teleportation") end,
+        function() teleportAndTouch(T.Purchases.LemonX.Buttons.Structure["X Rear Platform 1"].Button, "X Rear Platform 1") end,
+        function() teleportAndTouch(T.Purchases.LemonX.Buttons.Structure["X Rear Platform 2"].Button, "X Rear Platform 2") end,
+        function() teleportAndTouch(T.Purchases.LemonX.Buttons.Multiplier["Lemon Space Port"].Button, "Lemon Space Port") end,
+        function() teleportAndTouch(T.Purchases.LemonX.Buttons.Structure["X Rear Platform 3"].Button, "X Rear Platform 3") end,
+        function() teleportAndTouch(T.Purchases.LemonX.Buttons.Multiplier["Intergalactic Lemon Trade"].Button, "Intergalactic Lemon Trade") end,
+        function() teleportAndTouch(T.Purchases.LemonX.Buttons.Multiplier["Space Agriculture"].Button, "Space Agriculture") end,
+        function() teleportAndTouch(T.Purchases.LemonX.Buttons.Multiplier["Rocket Reuse"].Button, "Rocket Reuse") end,
+        function() teleportAndTouch(T.Purchases.LemonX.Buttons.Structure["X Walls 2"].Button, "X Walls 2") end,
+        function() teleportAndTouch(T.Purchases.LemonX.Buttons.Multiplier["X Exterior Signs"].Button, "X Exterior Signs") end,
+        function() teleportAndTouch(T.Purchases.LemonX.Buttons.Structure["X Rear Platform 4"].Button, "X Rear Platform 4") end,
+        function() teleportAndTouch(T.Purchases.LemonX.Buttons.Multiplier["Warp Speed Shipping"].Button, "Warp Speed Shipping") end,
+        function() teleportAndTouch(T.Purchases.LemonX.Buttons.Structure["X Airlock 2"].Button, "X Airlock 2") end,
+        function() teleportAndTouch(T.Purchases.LemonX.Buttons.Structure["X Lift 1"].Button, "X Lift 1") end,
+        function() teleportAndTouch(T.Purchases.LemonX.Buttons.Multiplier["Interdimensional Markets"].Button, "Interdimensional Markets") end,
+        function() teleportAndTouch(T.Purchases.LemonX.Buttons.Multiplier["Agriculture Expansion"].Button, "Agriculture Expansion") end,
+        function() teleportAndTouch(T.Purchases.LemonX.Buttons.Multiplier["Citrus Thrusters"].Button, "Citrus Thrusters") end,
+        function() teleportAndTouch(T.Purchases.LemonX.Buttons.Structure["X Rear Platform 5"].Button, "X Rear Platform 5") end,
+        function() teleportAndTouch(T.Purchases.LemonX.Buttons.Multiplier["Galactic Empire"].Button, "Galactic Empire") end,
+    }
+end
+
 -- ===================== COMPLETE ALL =====================
 completeAllBtn.MouseButton1Click:Connect(function()
     if isRunning then return end
     isRunning = true
     setDot(true)
     local all = {
-        {stepsStand,    "Lemon Stand"},
-        {stepsDash,     "Lemon Dash"},
-        {stepsDepot,    "Lemon Depot"},
-        {stepsTrading,  "Lemon Trading"},
-        {stepsLabs,     "Lemon Labs"},
-        {stepsRobotics, "Lemon Robotics"},
-        {stepsRepublic, "Lemon Republic"},
+        { stepsStand,    "Lemon Stand"    },
+        { stepsDash,     "Lemon Dash"     },
+        { stepsDepot,    "Lemon Depot"    },
+        { stepsTrading,  "Lemon Trading"  },
+        { stepsLabs,     "Lemon Labs"     },
+        { stepsRobotics, "Lemon Robotics" },
+        { stepsRepublic, "Lemon Republic" },
+        { stepsLemonX,   "LemonX"         },
     }
     for _, entry in ipairs(all) do
         setStatus("▶ " .. entry[2])
@@ -580,6 +646,34 @@ upgStandBtn.MouseButton1Click:Connect(makeToggleLogic(
             :FindFirstChild("Lemon Stand")
             :FindFirstChild("Lemon Stand")
             .Upgrade:InvokeServer(25)
+    end,
+    0.1
+))
+
+-- Upgrade Lemon Dash
+upgDashBtn.MouseButton1Click:Connect(makeToggleLogic(
+    upgDashBg, upgDashKnob,
+    function() return upgradeDashOn end,
+    function(v) upgradeDashOn = v end,
+    function()
+        T.Purchases:FindFirstChild("LemonDash")
+            :FindFirstChild("LemonDash")
+            :FindFirstChild("LemonDash")
+            .Upgrade:InvokeServer(50)
+    end,
+    0.1
+))
+
+-- Upgrade Lemon Depot
+upgDepotBtn.MouseButton1Click:Connect(makeToggleLogic(
+    upgDepotBg, upgDepotKnob,
+    function() return upgradeDepotOn end,
+    function(v) upgradeDepotOn = v end,
+    function()
+        T.Purchases:FindFirstChild("Lemon Depot")
+            :FindFirstChild("Lemon Depot")
+            :FindFirstChild("Lemon Depot")
+            .Upgrade:InvokeServer(50)
     end,
     0.1
 ))
