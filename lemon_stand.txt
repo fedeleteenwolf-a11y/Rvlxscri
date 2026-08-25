@@ -488,6 +488,20 @@ local function stepsRepublic()
         function() teleportAndTouch(T.Purchases["Lemon Republic"].Buttons.Multiplier["Public Citrus Works"].Button, "Public Citrus Works") end,
         function() teleportAndTouch(T.Purchases["Lemon Republic"].Buttons.Structure["Republic Building 4"].Button, "Republic Building 4") end,
         function() teleportAndTouch(T.Purchases["Lemon Republic"].Buttons.Multiplier["Lifelong Terms"].Button, "Lifelong Terms") end,
+        function() teleportAndTouch(T.Purchases["Lemon Republic"].Buttons.Structure["Republic Floor 2 Walls"].Button, "Republic Floor 2 Walls") end,
+        function() teleportAndTouch(T.Purchases["Lemon Republic"].Buttons.Structure["Republic Floor 3 Staircase 1"].Button, "Republic Floor 3 Staircase 1") end,
+        function() teleportAndTouch(T.Purchases["Lemon Republic"].Buttons.Structure["Republic Floor 3"].Button, "Republic Floor 3") end,
+        function() teleportAndTouch(T.Purchases["Lemon Republic"].Buttons.Multiplier["Centralized Power"].Button, "Centralized Power") end,
+        function() teleportAndTouch(T.Purchases["Lemon Republic"].Buttons.Structure["Republic Rear Pillar 1"].Button, "Republic Rear Pillar 1") end,
+        function() teleportAndTouch(T.Purchases["Lemon Republic"].Buttons.Structure["Republic Rear Pillar 2"].Button, "Republic Rear Pillar 2") end,
+        function() teleportAndTouch(T.Purchases["Lemon Republic"].Buttons.Structure["Republic Building 3"].Button, "Republic Building 3") end,
+        function() teleportAndTouch(T.Purchases["Lemon Republic"].Buttons.Multiplier["Lemon Propaganda"].Button, "Lemon Propaganda") end,
+        function() teleportAndTouch(T.Purchases["Lemon Republic"].Buttons.Multiplier["Lemon Tariffs"].Button, "Lemon Tariffs") end,
+        function() teleportAndTouch(T.Purchases["Lemon Republic"].Buttons.Structure["Republic Balcony"].Button, "Republic Balcony") end,
+        function() teleportAndTouch(T.Purchases["Lemon Republic"].Buttons.Structure["Republic Floor 3 Walls"].Button, "Republic Floor 3 Walls") end,
+        function() teleportAndTouch(T.Purchases["Lemon Republic"].Buttons.Multiplier["Corporate Lobbying"].Button, "Corporate Lobbying") end,
+        function() teleportAndTouch(T.Purchases["Lemon Republic"].Buttons.Multiplier["Personal Aides"].Button, "Personal Aides") end,
+        function() teleportAndTouch(T.Purchases["Lemon Republic"].Buttons.Multiplier["Lemon Tax"].Button, "Lemon Tax") end,
     }
 end
 
