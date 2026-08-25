@@ -1,0 +1,648 @@
+local Players = game:GetService("Players")
+local localPlayer = Players.LocalPlayer
+
+local existing = localPlayer.PlayerGui:FindFirstChild("LemonStandGui")
+if existing then existing:Destroy() end
+
+local function createGui()
+    local gui = Instance.new("ScreenGui")
+    gui.Name = "LemonStandGui"
+    gui.ResetOnSpawn = false
+    gui.Parent = localPlayer.PlayerGui
+
+    local frame = Instance.new("Frame")
+    frame.Size = UDim2.new(0, 280, 0, 280)
+    frame.Position = UDim2.new(0.5, -140, 0, 20)
+    frame.BackgroundColor3 = Color3.fromRGB(26, 26, 26)
+    frame.BorderSizePixel = 0
+    frame.Active = true
+    frame.Draggable = true
+    frame.Parent = gui
+    Instance.new("UICorner", frame).CornerRadius = UDim.new(0, 10)
+
+    -- Titlebar
+    local titlebar = Instance.new("Frame")
+    titlebar.Size = UDim2.new(1, 0, 0, 30)
+    titlebar.BackgroundColor3 = Color3.fromRGB(17, 17, 17)
+    titlebar.BorderSizePixel = 0
+    titlebar.Parent = frame
+    Instance.new("UICorner", titlebar).CornerRadius = UDim.new(0, 10)
+
+    local dot = Instance.new("Frame")
+    dot.Size = UDim2.new(0, 8, 0, 8)
+    dot.Position = UDim2.new(0, 10, 0.5, -4)
+    dot.BackgroundColor3 = Color3.fromRGB(80, 80, 80)
+    dot.BorderSizePixel = 0
+    dot.Parent = titlebar
+    Instance.new("UICorner", dot).CornerRadius = UDim.new(1, 0)
+
+    local titleLbl = Instance.new("TextLabel")
+    titleLbl.Size = UDim2.new(1, -80, 1, 0)
+    titleLbl.Position = UDim2.new(0, 26, 0, 0)
+    titleLbl.BackgroundTransparency = 1
+    titleLbl.Text = "Lemon Stand"
+    titleLbl.TextColor3 = Color3.fromRGB(200, 200, 200)
+    titleLbl.TextSize = 12
+    titleLbl.Font = Enum.Font.Code
+    titleLbl.TextXAlignment = Enum.TextXAlignment.Left
+    titleLbl.Parent = titlebar
+
+    local minBtn = Instance.new("TextButton")
+    minBtn.Size = UDim2.new(0, 26, 0, 20)
+    minBtn.Position = UDim2.new(1, -56, 0.5, -10)
+    minBtn.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+    minBtn.BorderSizePixel = 0
+    minBtn.Text = "—"
+    minBtn.TextColor3 = Color3.fromRGB(120, 120, 120)
+    minBtn.TextSize = 12
+    minBtn.Font = Enum.Font.Code
+    minBtn.Parent = titlebar
+    Instance.new("UICorner", minBtn).CornerRadius = UDim.new(0, 4)
+
+    local closeBtn = Instance.new("TextButton")
+    closeBtn.Size = UDim2.new(0, 26, 0, 20)
+    closeBtn.Position = UDim2.new(1, -26, 0.5, -10)
+    closeBtn.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+    closeBtn.BorderSizePixel = 0
+    closeBtn.Text = "X"
+    closeBtn.TextColor3 = Color3.fromRGB(120, 120, 120)
+    closeBtn.TextSize = 12
+    closeBtn.Font = Enum.Font.Code
+    closeBtn.Parent = titlebar
+    Instance.new("UICorner", closeBtn).CornerRadius = UDim.new(0, 4)
+
+    -- ScrollingFrame
+    local scroll = Instance.new("ScrollingFrame")
+    scroll.Size = UDim2.new(1, -16, 1, -58)
+    scroll.Position = UDim2.new(0, 8, 0, 34)
+    scroll.BackgroundTransparency = 1
+    scroll.BorderSizePixel = 0
+    scroll.ScrollBarThickness = 3
+    scroll.ScrollBarImageColor3 = Color3.fromRGB(60, 60, 60)
+    scroll.CanvasSize = UDim2.new(0, 0, 0, 0)
+    scroll.AutomaticCanvasSize = Enum.AutomaticSize.Y
+    scroll.Parent = frame
+
+    local layout = Instance.new("UIListLayout")
+    layout.SortOrder = Enum.SortOrder.LayoutOrder
+    layout.Padding = UDim.new(0, 5)
+    layout.Parent = scroll
+
+    local padding = Instance.new("UIPadding")
+    padding.PaddingBottom = UDim.new(0, 4)
+    padding.Parent = scroll
+
+    local orderCounter = 0
+    local function nextOrder()
+        orderCounter += 1
+        return orderCounter
+    end
+
+    local function makeBtn(labelText, color)
+        local btn = Instance.new("TextButton")
+        btn.Size = UDim2.new(1, 0, 0, 30)
+        btn.BackgroundColor3 = color or Color3.fromRGB(34, 34, 34)
+        btn.BorderSizePixel = 0
+        btn.Text = "⚡  " .. labelText
+        btn.TextColor3 = Color3.fromRGB(220, 220, 220)
+        btn.TextSize = 12
+        btn.Font = Enum.Font.Code
+        btn.TextXAlignment = Enum.TextXAlignment.Left
+        btn.LayoutOrder = nextOrder()
+        btn.Parent = scroll
+        Instance.new("UICorner", btn).CornerRadius = UDim.new(0, 7)
+        local p = Instance.new("UIPadding")
+        p.PaddingLeft = UDim.new(0, 10)
+        p.Parent = btn
+        return btn
+    end
+
+    local function makeToggleRow(labelText)
+        local row = Instance.new("Frame")
+        row.Size = UDim2.new(1, 0, 0, 30)
+        row.BackgroundColor3 = Color3.fromRGB(34, 34, 34)
+        row.BorderSizePixel = 0
+        row.LayoutOrder = nextOrder()
+        row.Parent = scroll
+        Instance.new("UICorner", row).CornerRadius = UDim.new(0, 7)
+
+        local lbl = Instance.new("TextLabel")
+        lbl.Size = UDim2.new(1, -54, 1, 0)
+        lbl.Position = UDim2.new(0, 10, 0, 0)
+        lbl.BackgroundTransparency = 1
+        lbl.Text = "⚡  " .. labelText
+        lbl.TextColor3 = Color3.fromRGB(220, 220, 220)
+        lbl.TextSize = 12
+        lbl.Font = Enum.Font.Code
+        lbl.TextXAlignment = Enum.TextXAlignment.Left
+        lbl.TextTruncate = Enum.TextTruncate.None
+        lbl.Parent = row
+
+        local bg = Instance.new("Frame")
+        bg.Size = UDim2.new(0, 34, 0, 18)
+        bg.Position = UDim2.new(1, -44, 0.5, -9)
+        bg.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+        bg.BorderSizePixel = 0
+        bg.Parent = row
+        Instance.new("UICorner", bg).CornerRadius = UDim.new(1, 0)
+
+        local knob = Instance.new("Frame")
+        knob.Size = UDim2.new(0, 12, 0, 12)
+        knob.Position = UDim2.new(0, 3, 0.5, -6)
+        knob.BackgroundColor3 = Color3.fromRGB(100, 100, 100)
+        knob.BorderSizePixel = 0
+        knob.Parent = bg
+        Instance.new("UICorner", knob).CornerRadius = UDim.new(1, 0)
+
+        local tbtn = Instance.new("TextButton")
+        tbtn.Size = UDim2.new(1, 0, 1, 0)
+        tbtn.BackgroundTransparency = 1
+        tbtn.Text = ""
+        tbtn.Parent = bg
+
+        return bg, knob, tbtn
+    end
+
+    local function makeSep()
+        local sep = Instance.new("Frame")
+        sep.Size = UDim2.new(1, 0, 0, 1)
+        sep.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
+        sep.BorderSizePixel = 0
+        sep.LayoutOrder = nextOrder()
+        sep.Parent = scroll
+    end
+
+    -- Buttons
+    local completeAllBtn = makeBtn("Complete All Lemons", Color3.fromRGB(50, 35, 10))
+    makeSep()
+    local upgStandBg,    upgStandKnob,    upgStandBtn    = makeToggleRow("Upgrade Lemon Stand")
+    local upgRoboticsBg, upgRoboticsKnob, upgRoboticsBtn = makeToggleRow("Upgrade Lemon Robotics")
+    local upgRepBg,      upgRepKnob,      upgRepBtn      = makeToggleRow("Upgrade Lemon Republic")
+    makeSep()
+    local autoEatBg,     autoEatKnob,     autoEatBtn     = makeToggleRow("Auto Eat")
+    local autoHarvestBg, autoHarvestKnob, autoHarvestBtn = makeToggleRow("Auto Harvest")
+
+    -- Statusbar
+    local statusbar = Instance.new("Frame")
+    statusbar.Size = UDim2.new(1, 0, 0, 20)
+    statusbar.Position = UDim2.new(0, 0, 1, -20)
+    statusbar.BackgroundColor3 = Color3.fromRGB(17, 17, 17)
+    statusbar.BorderSizePixel = 0
+    statusbar.Parent = frame
+    Instance.new("UICorner", statusbar).CornerRadius = UDim.new(0, 10)
+
+    local statusLbl = Instance.new("TextLabel")
+    statusLbl.Size = UDim2.new(1, -16, 1, 0)
+    statusLbl.Position = UDim2.new(0, 10, 0, 0)
+    statusLbl.BackgroundTransparency = 1
+    statusLbl.Text = ""
+    statusLbl.TextColor3 = Color3.fromRGB(80, 80, 80)
+    statusLbl.TextSize = 10
+    statusLbl.Font = Enum.Font.Code
+    statusLbl.TextXAlignment = Enum.TextXAlignment.Left
+    statusLbl.Parent = statusbar
+
+    return frame, dot,
+        completeAllBtn,
+        upgStandBg, upgStandKnob, upgStandBtn,
+        upgRoboticsBg, upgRoboticsKnob, upgRoboticsBtn,
+        upgRepBg, upgRepKnob, upgRepBtn,
+        autoEatBg, autoEatKnob, autoEatBtn,
+        autoHarvestBg, autoHarvestKnob, autoHarvestBtn,
+        statusLbl, minBtn, closeBtn
+end
+
+local frame, dot,
+    completeAllBtn,
+    upgStandBg, upgStandKnob, upgStandBtn,
+    upgRoboticsBg, upgRoboticsKnob, upgRoboticsBtn,
+    upgRepBg, upgRepKnob, upgRepBtn,
+    autoEatBg, autoEatKnob, autoEatBtn,
+    autoHarvestBg, autoHarvestKnob, autoHarvestBtn,
+    statusLbl, minBtn, closeBtn = createGui()
+
+local function setStatus(msg) statusLbl.Text = msg end
+local function setDot(on)
+    dot.BackgroundColor3 = on and Color3.fromRGB(59, 109, 17) or Color3.fromRGB(80, 80, 80)
+end
+
+local FULL_HEIGHT = 280
+local COLLAPSED_HEIGHT = 52
+local collapsed = false
+
+minBtn.MouseButton1Click:Connect(function()
+    collapsed = not collapsed
+    minBtn.Text = collapsed and "□" or "—"
+    frame.Size = collapsed
+        and UDim2.new(0, 280, 0, COLLAPSED_HEIGHT)
+        or  UDim2.new(0, 280, 0, FULL_HEIGHT)
+end)
+
+-- ===================== TROVA TYCOON =====================
+local function findMyTycoon()
+    for i = 1, 10 do
+        local tycoon = workspace:FindFirstChild("Tycoon" .. i)
+        if tycoon then
+            local owner = tycoon:FindFirstChild("Owner")
+            if owner then
+                local val = owner.Value
+                if val == localPlayer or val == localPlayer.Name or tostring(val) == localPlayer.Name then
+                    return tycoon, i
+                end
+            end
+        end
+    end
+    return nil
+end
+
+setStatus("Searching tycoon...")
+local myTycoon, tycoonNum
+repeat
+    myTycoon, tycoonNum = findMyTycoon()
+    if not myTycoon then task.wait(2) end
+until myTycoon
+setStatus("Tycoon" .. tycoonNum .. " found")
+task.wait(1)
+setStatus("")
+
+local T = myTycoon
+
+local upgradeStandOn    = false
+local upgradeRoboticsOn = false
+local upgradeRepOn      = false
+local autoEatOn         = false
+local autoHarvestOn     = false
+
+closeBtn.MouseButton1Click:Connect(function()
+    upgradeStandOn    = false
+    upgradeRoboticsOn = false
+    upgradeRepOn      = false
+    autoEatOn         = false
+    autoHarvestOn     = false
+    local g = localPlayer.PlayerGui:FindFirstChild("LemonStandGui")
+    if g then g:Destroy() end
+end)
+
+-- ===================== HELPERS =====================
+local function teleportAndTouch(part, label)
+    local hrp = localPlayer.Character and localPlayer.Character:FindFirstChild("HumanoidRootPart")
+    if not hrp then setStatus("No HumanoidRootPart!") return end
+    setStatus("Buying: " .. label)
+    hrp.CFrame = part.CFrame + Vector3.new(0, 5, 0)
+    task.wait(0.5)
+    firetouchinterest(hrp, part, 0)
+    task.wait(0.1)
+    firetouchinterest(hrp, part, 1)
+    task.wait(1)
+end
+
+local function runSteps(steps)
+    for _, step in ipairs(steps) do pcall(step) end
+end
+
+local isRunning = false
+
+-- ===================== STEP LISTS =====================
+local function stepsStand()
+    return {
+        function() teleportAndTouch(T.Purchases["Lemon Stand"].Buttons["Lemon Stand"].Button, "Lemon Stand") end,
+        function() T.Remotes.WakeIncomeStream:InvokeServer("LemonStand") end,
+        function() teleportAndTouch(T.Purchases["Lemon Stand"].Buttons.Other["Cash Register"].Button, "Cash Register") end,
+        function() teleportAndTouch(T.Purchases["Lemon Stand"].Buttons.Multiplier.Juicer.Button, "Juicer") end,
+        function() teleportAndTouch(T.Purchases["Lemon Stand"].Buttons.Multiplier["Cup Stand"].Button, "Cup Stand") end,
+        function() teleportAndTouch(T.Purchases["Lemon Stand"].Buttons.Multiplier.Billboard.Button, "Billboard") end,
+        function() teleportAndTouch(T.Purchases["Lemon Stand"].Buttons.Multiplier["Sugar Mixer"].Button, "Sugar Mixer") end,
+        function() teleportAndTouch(T.Purchases["Lemon Stand"].Buttons.Multiplier["Street Fliers"].Button, "Street Fliers") end,
+        function() teleportAndTouch(T.Purchases["Lemon Stand"].Buttons.Multiplier["Ice Maker"].Button, "Ice Maker") end,
+        function() teleportAndTouch(T.Purchases["Lemon Stand"].Buttons.Multiplier["BOGO Deals"].Button, "BOGO Deals") end,
+    }
+end
+
+local function stepsDash()
+    return {
+        function() teleportAndTouch(T.Purchases.LemonDash.Buttons.LemonDash.Button, "Lemon Dash") end,
+        function() teleportAndTouch(T.Purchases.LemonDash.Buttons.Structure["Dash Floor"].Button, "Dash Floor") end,
+        function() teleportAndTouch(T.Purchases.LemonDash.Buttons.Structure["Dash Walls"].Button, "Dash Walls") end,
+        function() teleportAndTouch(T.Purchases.LemonDash.Buttons.Multiplier["Higher Fees"].Button, "Higher Fees") end,
+        function() teleportAndTouch(T.Purchases.LemonDash.Buttons.Multiplier["Company Vehicle"].Button, "Company Vehicle") end,
+        function() teleportAndTouch(T.Purchases.LemonDash.Buttons.Multiplier["LemonDash Plus"].Button, "LemonDash Plus") end,
+        function() teleportAndTouch(T.Purchases.LemonDash.Buttons.Multiplier["Dash Exterior Sign"].Button, "Dash Exterior Sign") end,
+        function() teleportAndTouch(T.Purchases.LemonDash.Buttons.Multiplier.Tips.Button, "Tips") end,
+    }
+end
+
+local function stepsDepot()
+    return {
+        function() teleportAndTouch(T.Purchases["Lemon Depot"].Buttons["Lemon Depot"].Button, "Lemon Depot") end,
+        function() teleportAndTouch(T.Purchases["Lemon Depot"].Buttons.Multiplier["Bigger Fleet"].Button, "Bigger Fleet") end,
+        function() teleportAndTouch(T.Purchases["Lemon Depot"].Buttons.Structure["Depot Foundation"].Button, "Depot Foundation") end,
+        function() teleportAndTouch(T.Purchases["Lemon Depot"].Buttons.Multiplier["Refrigerated Trucks"].Button, "Refrigerated Trucks") end,
+        function() teleportAndTouch(T.Purchases["Lemon Depot"].Buttons.Structure["Depot Raised Area"].Button, "Depot Raised Area") end,
+        function() teleportAndTouch(T.Purchases["Lemon Depot"].Buttons.Multiplier["Automated Loading"].Button, "Automated Loading") end,
+        function() teleportAndTouch(T.Purchases["Lemon Depot"].Buttons.Structure["Depot Wall Framing 2"].Button, "Depot Wall Framing 2") end,
+        function() teleportAndTouch(T.Purchases["Lemon Depot"].Buttons.Structure["Depot Balcony 1"].Button, "Depot Balcony 1") end,
+        function() teleportAndTouch(T.Purchases["Lemon Depot"].Buttons.Structure["Depot Balcony 2"].Button, "Depot Balcony 2") end,
+        function() teleportAndTouch(T.Purchases["Lemon Depot"].Buttons.Multiplier["Automated Boxing"].Button, "Automated Boxing") end,
+        function() teleportAndTouch(T.Purchases["Lemon Depot"].Buttons.Structure["Depot Balcony 3"].Button, "Depot Balcony 3") end,
+        function() teleportAndTouch(T.Purchases["Lemon Depot"].Buttons.Structure["Depot Office Floor"].Button, "Depot Office Floor") end,
+        function() teleportAndTouch(T.Purchases["Lemon Depot"].Buttons.Multiplier["GPS Logistics"].Button, "GPS Logistics") end,
+        function() teleportAndTouch(T.Purchases["Lemon Depot"].Buttons.Structure["Depot Office Walls"].Button, "Depot Office Walls") end,
+        function() teleportAndTouch(T.Purchases["Lemon Depot"].Buttons.Multiplier["Toll Evasion"].Button, "Toll Evasion") end,
+        function() teleportAndTouch(T.Purchases["Lemon Depot"].Buttons.Multiplier["Delivery Insurance"].Button, "Delivery Insurance") end,
+        function() teleportAndTouch(T.Purchases["Lemon Depot"].Buttons.Structure["Depot Rear Lot"].Button, "Depot Rear Lot") end,
+        function() teleportAndTouch(T.Purchases["Lemon Depot"].Buttons.Multiplier["Even Bigger Fleet"].Button, "Even Bigger Fleet") end,
+        function() teleportAndTouch(T.Purchases["Lemon Depot"].Buttons.Multiplier["Wholesale Pricing"].Button, "Wholesale Pricing") end,
+        function() teleportAndTouch(T.Purchases["Lemon Depot"].Buttons.Structure["Depot Wall Framing 1"].Button, "Depot Wall Framing 1") end,
+        function() teleportAndTouch(T.Purchases["Lemon Depot"].Buttons.Structure["Depot Roof Framing"].Button, "Depot Roof Framing") end,
+        function() teleportAndTouch(T.Purchases["Lemon Depot"].Buttons.Multiplier["Depot Exterior Sign"].Button, "Depot Exterior Sign") end,
+        function() teleportAndTouch(T.Purchases["Lemon Depot"].Buttons.Multiplier["Truck Branding"].Button, "Truck Branding") end,
+        function() teleportAndTouch(T.Purchases["Lemon Depot"].Buttons.Multiplier["Lemon Commercials"].Button, "Lemon Commercials") end,
+    }
+end
+
+local function stepsTrading()
+    return {
+        function() teleportAndTouch(T.Purchases.Hills.Buttons.Roads["Trading Road"].Button, "Trading Road") end,
+        function() teleportAndTouch(T.Purchases["Lemon Trading"].Buttons["Lemon Trading"].Button, "Lemon Trading") end,
+        function() teleportAndTouch(T.Purchases["Lemon Trading"].Buttons.Multiplier["Expert Brokers"].Button, "Expert Brokers") end,
+        function() teleportAndTouch(T.Purchases["Lemon Trading"].Buttons.Structure["Trading Elevator"].Button, "Trading Elevator") end,
+        function() teleportAndTouch(T.Purchases["Lemon Trading"].Buttons.Structure["Trading Floor 2"].Button, "Trading Floor 2") end,
+        function() teleportAndTouch(T.Purchases["Lemon Trading"].Buttons.Multiplier["Obfuscated Finances"].Button, "Obfuscated Finances") end,
+        function() teleportAndTouch(T.Purchases["Lemon Trading"].Buttons.Multiplier["Lemon NFTs"].Button, "Lemon NFTs") end,
+        function() teleportAndTouch(T.Purchases["Lemon Trading"].Buttons.Structure["Trading Mine"].Button, "Trading Mine") end,
+        function() teleportAndTouch(T.Purchases["Lemon Trading"].Buttons.Multiplier["Crypto Miners"].Button, "Crypto Miners") end,
+        function() teleportAndTouch(T.Purchases["Lemon Trading"].Buttons.Multiplier["Offshore Banking"].Button, "Offshore Banking") end,
+        function() teleportAndTouch(T.Purchases["Lemon Trading"].Buttons.Structure["Trading Floor 3"].Button, "Trading Floor 3") end,
+        function() teleportAndTouch(T.Purchases["Lemon Trading"].Buttons.Multiplier["Faster Terminals"].Button, "Faster Terminals") end,
+        function() teleportAndTouch(T.Purchases["Lemon Trading"].Buttons.Multiplier["Hype Generators"].Button, "Hype Generators") end,
+        function() teleportAndTouch(T.Purchases["Lemon Trading"].Buttons.Multiplier["Lemon Monopoly"].Button, "Lemon Monopoly") end,
+        function() teleportAndTouch(T.Purchases["Lemon Trading"].Buttons.Structure["Trading Lot"].Button, "Trading Lot") end,
+        function() teleportAndTouch(T.Purchases["Lemon Trading"].Buttons.Multiplier["Celebrity Pumpers"].Button, "Celebrity Pumpers") end,
+        function() teleportAndTouch(T.Purchases["Lemon Trading"].Buttons.Multiplier["Trading Exterior Displays"].Button, "Trading Exterior Displays") end,
+        function() teleportAndTouch(T.Purchases["Lemon Trading"].Buttons.Multiplier["More Displays"].Button, "More Displays") end,
+        function() teleportAndTouch(T.Purchases["Lemon Trading"].Buttons.Multiplier["Trading Bots"].Button, "Trading Bots") end,
+        function() teleportAndTouch(T.Purchases["Lemon Trading"].Buttons.Multiplier["24 Hour Trading"].Button, "24 Hour Trading") end,
+        function() teleportAndTouch(T.Purchases["Lemon Trading"].Buttons.Structure["Trading Roof Supports"].Button, "Trading Roof Supports") end,
+        function() teleportAndTouch(T.Purchases["Lemon Trading"].Buttons.Multiplier["Trading Exterior Sign"].Button, "Trading Exterior Sign") end,
+        function() teleportAndTouch(T.Purchases["Lemon Trading"].Buttons.Multiplier["Go Public"].Button, "Go Public") end,
+    }
+end
+
+local function stepsLabs()
+    return {
+        function() teleportAndTouch(T.Purchases.Hills.Buttons.Roads["Labs Road"].Button, "Labs Road") end,
+        function() teleportAndTouch(T.Purchases["Lemon Labs"].Buttons["Lemon Labs"].Button, "Lemon Labs") end,
+        function() teleportAndTouch(T.Purchases["Lemon Labs"].Buttons.Multipliers["Government Funding"].Button, "Government Funding") end,
+        function() teleportAndTouch(T.Purchases["Lemon Labs"].Buttons.Structure["Labs Overhang"].Button, "Labs Overhang") end,
+        function() teleportAndTouch(T.Purchases["Lemon Labs"].Buttons.Multipliers["Lemon Based Computing"].Button, "Lemon Based Computing") end,
+        function() teleportAndTouch(T.Purchases["Lemon Labs"].Buttons.Structure["Labs Floor Trim"].Button, "Labs Floor Trim") end,
+        function() teleportAndTouch(T.Purchases["Lemon Labs"].Buttons.Structure["Labs Walls 1"].Button, "Labs Walls 1") end,
+        function() teleportAndTouch(T.Purchases["Lemon Labs"].Buttons.Multipliers["AI Researchers"].Button, "AI Researchers") end,
+        function() teleportAndTouch(T.Purchases["Lemon Labs"].Buttons.Structure["Labs Room 1"].Button, "Labs Room 1") end,
+        function() teleportAndTouch(T.Purchases["Lemon Labs"].Buttons.Multipliers["Gene Splicing"].Button, "Gene Splicing") end,
+        function() teleportAndTouch(T.Purchases["Lemon Labs"].Buttons.Structure["Labs Second Floor"].Button, "Labs Second Floor") end,
+        function() teleportAndTouch(T.Purchases["Lemon Labs"].Buttons.Structure["Labs Second Floor Staircase"].Button, "Labs Second Floor Staircase") end,
+        function() teleportAndTouch(T.Purchases["Lemon Labs"].Buttons.Multipliers["Genetic Patents"].Button, "Genetic Patents") end,
+        function() teleportAndTouch(T.Purchases["Lemon Labs"].Buttons.Multipliers["Citrus Based Fuel"].Button, "Citrus Based Fuel") end,
+        function() teleportAndTouch(T.Purchases["Lemon Labs"].Buttons.Structure["Labs Walls 2"].Button, "Labs Walls 2") end,
+        function() teleportAndTouch(T.Purchases["Lemon Labs"].Buttons.Structure["Labs Walls Detailing"].Button, "Labs Walls Detailing") end,
+        function() teleportAndTouch(T.Purchases["Lemon Labs"].Buttons.Multipliers.LemonAI.Button, "LemonAI") end,
+        function() teleportAndTouch(T.Purchases["Lemon Labs"].Buttons.Structure["Labs Room 2"].Button, "Labs Room 2") end,
+        function() teleportAndTouch(T.Purchases["Lemon Labs"].Buttons.Multipliers["Nano Tech"].Button, "Nano Tech") end,
+        function() teleportAndTouch(T.Purchases["Lemon Labs"].Buttons.Multipliers["Fuel Deliveries"].Button, "Fuel Deliveries") end,
+        function() teleportAndTouch(T.Purchases["Lemon Labs"].Buttons.Structure["Labs Testing Area"].Button, "Labs Testing Area") end,
+        function() teleportAndTouch(T.Purchases["Lemon Labs"].Buttons.Multipliers["Experimental Testing"].Button, "Experimental Testing") end,
+        function() teleportAndTouch(T.Purchases["Lemon Labs"].Buttons.Structure["Labs Roof Balcony"].Button, "Labs Roof Balcony") end,
+        function() teleportAndTouch(T.Purchases["Lemon Labs"].Buttons.Structure["Labs Roof Staircase"].Button, "Labs Roof Staircase") end,
+        function() teleportAndTouch(T.Purchases["Lemon Labs"].Buttons.Structure["Labs Roof"].Button, "Labs Roof") end,
+        function() teleportAndTouch(T.Purchases["Lemon Labs"].Buttons.Multipliers["Climate Control"].Button, "Climate Control") end,
+        function() teleportAndTouch(T.Purchases["Lemon Labs"].Buttons.Multipliers["Labs Exterior Sign"].Button, "Labs Exterior Sign") end,
+        function() teleportAndTouch(T.Purchases["Lemon Labs"].Buttons.Structure["Labs Second Floor Walls"].Button, "Labs Second Floor Walls") end,
+        function() teleportAndTouch(T.Purchases["Lemon Labs"].Buttons.Structure["Labs Second Floor Roof"].Button, "Labs Second Floor Roof") end,
+        function() teleportAndTouch(T.Purchases["Lemon Labs"].Buttons.Structure["Labs Ladder"].Button, "Labs Ladder") end,
+        function() teleportAndTouch(T.Purchases["Lemon Labs"].Buttons.Structure["Labs Balcony"].Button, "Labs Balcony") end,
+        function() teleportAndTouch(T.Purchases["Lemon Labs"].Buttons.Multipliers["Lemon Reactor"].Button, "Lemon Reactor") end,
+        function() teleportAndTouch(T.Purchases["Lemon Labs"].Buttons.Multipliers["Lemon Accelerator"].Button, "Lemon Accelerator") end,
+        function() teleportAndTouch(T.Purchases["Lemon Labs"].Buttons.Structure["Labs Room 3"].Button, "Labs Room 3") end,
+        function() teleportAndTouch(T.Purchases["Lemon Labs"].Buttons.Multipliers["Lemon Cloning"].Button, "Lemon Cloning") end,
+    }
+end
+
+local function stepsRobotics()
+    return {
+        function() teleportAndTouch(T.Purchases.Hills.Buttons.Roads["Robotics Road 1"].Button, "Robotics Road 1") end,
+        function() teleportAndTouch(T.Purchases.Hills.Buttons.Roads["Robotics Road 2"].Button, "Robotics Road 2") end,
+        function() teleportAndTouch(T.Purchases["Lemon Robotics"].Buttons["Lemon Robotics"].Button, "Lemon Robotics") end,
+        function() teleportAndTouch(T.Purchases["Lemon Robotics"].Buttons.Multiplier["Giga Lemon Factory"].Button, "Giga Lemon Factory") end,
+        function() teleportAndTouch(T.Purchases["Lemon Robotics"].Buttons.Multiplier["Citrus Lubricant"].Button, "Citrus Lubricant") end,
+        function() teleportAndTouch(T.Purchases["Lemon Robotics"].Buttons.Multiplier["Nanobot Farm"].Button, "Nanobot Farm") end,
+        function() teleportAndTouch(T.Purchases["Lemon Robotics"].Buttons.Structure["Robotics Staircase 1"].Button, "Robotics Staircase 1") end,
+        function() teleportAndTouch(T.Purchases["Lemon Robotics"].Buttons.Structure["Robotics Balcony 1"].Button, "Robotics Balcony 1") end,
+        function() teleportAndTouch(T.Purchases["Lemon Robotics"].Buttons.Multiplier["Robot Employees"].Button, "Robot Employees") end,
+        function() teleportAndTouch(T.Purchases["Lemon Robotics"].Buttons.Structure["Robotics Walls Base"].Button, "Robotics Walls Base") end,
+        function() teleportAndTouch(T.Purchases["Lemon Robotics"].Buttons.Other["Robotics Manager"].Button, "Robotics Manager") end,
+        function() teleportAndTouch(T.Purchases["Lemon Robotics"].Buttons.Structure["Robotics Walls"].Button, "Robotics Walls") end,
+        function() teleportAndTouch(T.Purchases["Lemon Robotics"].Buttons.Multiplier["Efficient Assembly"].Button, "Efficient Assembly") end,
+        function() teleportAndTouch(T.Purchases["Lemon Robotics"].Buttons.Multiplier["Military Contracts"].Button, "Military Contracts") end,
+        function() teleportAndTouch(T.Purchases["Lemon Robotics"].Buttons.Structure["Robotics Lot Extension"].Button, "Robotics Lot Extension") end,
+        function() teleportAndTouch(T.Purchases["Lemon Robotics"].Buttons.Multiplier["Overseas Production"].Button, "Overseas Production") end,
+        function() teleportAndTouch(T.Purchases["Lemon Robotics"].Buttons.Multiplier["Cyber Lemons"].Button, "Cyber Lemons") end,
+        function() teleportAndTouch(T.Purchases["Lemon Robotics"].Buttons.Multiplier["Growable Batteries"].Button, "Growable Batteries") end,
+        function() teleportAndTouch(T.Purchases["Lemon Robotics"].Buttons.Structure["Robotics Balcony 2"].Button, "Robotics Balcony 2") end,
+        function() teleportAndTouch(T.Purchases["Lemon Robotics"].Buttons.Multiplier["Vertical Integration"].Button, "Vertical Integration") end,
+        function() teleportAndTouch(T.Purchases["Lemon Robotics"].Buttons.Multiplier["Sun Exposure"].Button, "Sun Exposure") end,
+        function() teleportAndTouch(T.Purchases["Lemon Robotics"].Buttons.Structure["Robotics Second Floor Trim"].Button, "Robotics Second Floor Trim") end,
+        function() teleportAndTouch(T.Purchases["Lemon Robotics"].Buttons.Structure["Robotics Second Floor Walls"].Button, "Robotics Second Floor Walls") end,
+        function() teleportAndTouch(T.Purchases["Lemon Robotics"].Buttons.Structure["Robotics Roof"].Button, "Robotics Roof") end,
+        function() teleportAndTouch(T.Purchases["Lemon Robotics"].Buttons.Multiplier["Robotics Exterior Signs"].Button, "Robotics Exterior Signs") end,
+        function() teleportAndTouch(T.Purchases["Lemon Robotics"].Buttons.Multiplier["Robot Overclocking"].Button, "Robot Overclocking") end,
+        function() teleportAndTouch(T.Purchases["Lemon Robotics"].Buttons.Multiplier["Regenerative Robots"].Button, "Regenerative Robots") end,
+        function() teleportAndTouch(T.Purchases["Lemon Robotics"].Buttons.Structure["Robotics Ramp 1"].Button, "Robotics Ramp 1") end,
+        function() teleportAndTouch(T.Purchases["Lemon Robotics"].Buttons.Structure["Robotics Balcony 3"].Button, "Robotics Balcony 3") end,
+        function() teleportAndTouch(T.Purchases["Lemon Robotics"].Buttons.Multiplier["Lemon Domination"].Button, "Lemon Domination") end,
+    }
+end
+
+local function stepsRepublic()
+    return {
+        function() teleportAndTouch(T.Purchases.Hills.Buttons.Roads["Republic Road"].Button, "Republic Road") end,
+        function() teleportAndTouch(T.Purchases["Lemon Republic"].Buttons["Lemon Republic"].Button, "Lemon Republic") end,
+        function() teleportAndTouch(T.Purchases["Lemon Republic"].Buttons.Multiplier["Central Bank"].Button, "Central Bank") end,
+        function() teleportAndTouch(T.Purchases["Lemon Republic"].Buttons.Other["Republic Manager"].Button, "Republic Manager") end,
+        function() teleportAndTouch(T.Purchases["Lemon Republic"].Buttons.Structure["Republic Floor 1 Walls"].Button, "Republic Floor 1 Walls") end,
+        function() teleportAndTouch(T.Purchases["Lemon Republic"].Buttons.Structure["Republic Floor 2 Staircase 1"].Button, "Republic Floor 2 Staircase 1") end,
+        function() teleportAndTouch(T.Purchases["Lemon Republic"].Buttons.Structure["Republic Floor 2 Left"].Button, "Republic Floor 2 Left") end,
+        function() teleportAndTouch(T.Purchases["Lemon Republic"].Buttons.Multiplier["Lemon Subsidies"].Button, "Lemon Subsidies") end,
+        function() teleportAndTouch(T.Purchases["Lemon Republic"].Buttons.Multiplier["Bank Expansion"].Button, "Bank Expansion") end,
+        function() teleportAndTouch(T.Purchases["Lemon Republic"].Buttons.Structure["Republic Rear Road"].Button, "Republic Rear Road") end,
+        function() teleportAndTouch(T.Purchases["Lemon Republic"].Buttons.Structure["Republic Sidewalks"].Button, "Republic Sidewalks") end,
+        function() teleportAndTouch(T.Purchases["Lemon Republic"].Buttons.Structure["Republic Courtyard"].Button, "Republic Courtyard") end,
+        function() teleportAndTouch(T.Purchases["Lemon Republic"].Buttons.Multiplier["National Monument"].Button, "National Monument") end,
+        function() teleportAndTouch(T.Purchases["Lemon Republic"].Buttons.Structure["Republic Floor 2 Staircase 2"].Button, "Republic Floor 2 Staircase 2") end,
+        function() teleportAndTouch(T.Purchases["Lemon Republic"].Buttons.Structure["Republic Floor 3"].Button, "Republic Floor 3") end,
+        function() teleportAndTouch(T.Purchases["Lemon Republic"].Buttons.Multiplier["Automatic Voting"].Button, "Automatic Voting") end,
+        function() teleportAndTouch(T.Purchases["Lemon Republic"].Buttons.Structure["Republic Floor 2 Right"].Button, "Republic Floor 2 Right") end,
+        function() teleportAndTouch(T.Purchases["Lemon Republic"].Buttons.Structure["Republic Building 1"].Button, "Republic Building 1") end,
+        function() teleportAndTouch(T.Purchases["Lemon Republic"].Buttons.Structure["Republic Building 2"].Button, "Republic Building 2") end,
+        function() teleportAndTouch(T.Purchases["Lemon Republic"].Buttons.Structure["Republic Utility Lot"].Button, "Republic Utility Lot") end,
+        function() teleportAndTouch(T.Purchases["Lemon Republic"].Buttons.Multiplier["Public Citrus Works"].Button, "Public Citrus Works") end,
+        function() teleportAndTouch(T.Purchases["Lemon Republic"].Buttons.Structure["Republic Building 4"].Button, "Republic Building 4") end,
+        function() teleportAndTouch(T.Purchases["Lemon Republic"].Buttons.Multiplier["Lifelong Terms"].Button, "Lifelong Terms") end,
+    }
+end
+
+-- ===================== COMPLETE ALL =====================
+completeAllBtn.MouseButton1Click:Connect(function()
+    if isRunning then return end
+    isRunning = true
+    setDot(true)
+    local all = {
+        {stepsStand,    "Lemon Stand"},
+        {stepsDash,     "Lemon Dash"},
+        {stepsDepot,    "Lemon Depot"},
+        {stepsTrading,  "Lemon Trading"},
+        {stepsLabs,     "Lemon Labs"},
+        {stepsRobotics, "Lemon Robotics"},
+        {stepsRepublic, "Lemon Republic"},
+    }
+    for _, entry in ipairs(all) do
+        setStatus("▶ " .. entry[2])
+        runSteps(entry[1]())
+    end
+    setStatus("All Done!")
+    setDot(false)
+    task.wait(2)
+    setStatus("")
+    isRunning = false
+end)
+
+-- ===================== TOGGLE HELPER =====================
+local function makeToggleLogic(bg, knob, getOn, setOn, invokeFunc, intervalSecs)
+    local interval = intervalSecs or 0.1
+
+    local function setVisual(on)
+        if on then
+            bg.BackgroundColor3   = Color3.fromRGB(59, 109, 17)
+            knob.Position         = UDim2.new(0, 19, 0.5, -6)
+            knob.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+        else
+            bg.BackgroundColor3   = Color3.fromRGB(50, 50, 50)
+            knob.Position         = UDim2.new(0, 3, 0.5, -6)
+            knob.BackgroundColor3 = Color3.fromRGB(100, 100, 100)
+        end
+    end
+
+    local count = 0
+    return function()
+        local on = not getOn()
+        setOn(on)
+        setVisual(on)
+        if on then
+            count = 0
+            setDot(true)
+            task.spawn(function()
+                while getOn() do
+                    pcall(invokeFunc)
+                    count += 1
+                    setStatus("Cycle #" .. count)
+                    task.wait(interval)
+                end
+            end)
+        else
+            setDot(false)
+            setStatus("")
+            count = 0
+        end
+    end
+end
+
+-- Upgrade Lemon Stand
+upgStandBtn.MouseButton1Click:Connect(makeToggleLogic(
+    upgStandBg, upgStandKnob,
+    function() return upgradeStandOn end,
+    function(v) upgradeStandOn = v end,
+    function()
+        T.Purchases:FindFirstChild("Lemon Stand")
+            :FindFirstChild("Lemon Stand")
+            :FindFirstChild("Lemon Stand")
+            .Upgrade:InvokeServer(25)
+    end,
+    0.1
+))
+
+-- Upgrade Lemon Robotics
+upgRoboticsBtn.MouseButton1Click:Connect(makeToggleLogic(
+    upgRoboticsBg, upgRoboticsKnob,
+    function() return upgradeRoboticsOn end,
+    function(v) upgradeRoboticsOn = v end,
+    function()
+        T.Purchases:FindFirstChild("Lemon Robotics")
+            :FindFirstChild("Lemon Robotics")
+            :FindFirstChild("Lemon Robotics")
+            .Upgrade:InvokeServer(25)
+    end,
+    0.1
+))
+
+-- Upgrade Lemon Republic
+upgRepBtn.MouseButton1Click:Connect(makeToggleLogic(
+    upgRepBg, upgRepKnob,
+    function() return upgradeRepOn end,
+    function(v) upgradeRepOn = v end,
+    function()
+        T.Purchases:FindFirstChild("Lemon Republic")
+            :FindFirstChild("Lemon Republic")
+            :FindFirstChild("Lemon Republic")
+            .Upgrade:InvokeServer(25)
+    end,
+    0.1
+))
+
+-- Auto Eat
+autoEatBtn.MouseButton1Click:Connect(makeToggleLogic(
+    autoEatBg, autoEatKnob,
+    function() return autoEatOn end,
+    function(v) autoEatOn = v end,
+    function()
+        T.Remotes.EatFruit:InvokeServer({
+            [1] = 0,
+            [2] = {
+                ["GrowthRateBad1"] = 1,
+                ["ValueBad1"]      = 1,
+                ["Rate4"]          = 1,
+                ["Value3"]         = 2,
+                ["GrowthRate1"]    = 3,
+            }
+        })
+    end,
+    60
+))
+
+-- Auto Harvest
+local RS = game:GetService("ReplicatedStorage")
+local harvestRemote = RS.Core.RemoteRequest:FindFirstChild("OrchardPlot.Harvest")
+
+autoHarvestBtn.MouseButton1Click:Connect(makeToggleLogic(
+    autoHarvestBg, autoHarvestKnob,
+    function() return autoHarvestOn end,
+    function(v) autoHarvestOn = v end,
+    function()
+        if not harvestRemote then
+            harvestRemote = RS.Core.RemoteRequest:FindFirstChild("OrchardPlot.Harvest")
+        end
+        if not harvestRemote then return end
+        local plots = T.Orchard and T.Orchard.Plots
+        if not plots then return end
+        for i = 1, 100 do
+            if not autoHarvestOn then break end
+            local plot = plots:FindFirstChild("Plot" .. i)
+            if plot then
+                pcall(function()
+                    harvestRemote:InvokeServer(plot)
+                end)
+            end
+            task.wait(0.013)
+        end
+    end,
+    1.3
+))
