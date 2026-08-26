@@ -20,7 +20,6 @@ local function createGui()
     frame.Parent = gui
     Instance.new("UICorner", frame).CornerRadius = UDim.new(0, 10)
 
-    -- Titlebar
     local titlebar = Instance.new("Frame")
     titlebar.Size = UDim2.new(1, 0, 0, 30)
     titlebar.BackgroundColor3 = Color3.fromRGB(17, 17, 17)
@@ -71,7 +70,6 @@ local function createGui()
     closeBtn.Parent = titlebar
     Instance.new("UICorner", closeBtn).CornerRadius = UDim.new(0, 4)
 
-    -- ScrollingFrame
     local scroll = Instance.new("ScrollingFrame")
     scroll.Size = UDim2.new(1, -16, 1, -58)
     scroll.Position = UDim2.new(0, 8, 0, 34)
@@ -172,7 +170,6 @@ local function createGui()
         sep.Parent = scroll
     end
 
-    -- Buttons
     local completeAllBtn = makeBtn("Complete All Lemons", Color3.fromRGB(50, 35, 10))
     makeSep()
     local upgStandBg,    upgStandKnob,    upgStandBtn    = makeToggleRow("Upgrade Lemon Stand")
@@ -184,7 +181,6 @@ local function createGui()
     local autoEatBg,     autoEatKnob,     autoEatBtn     = makeToggleRow("Auto Eat")
     local autoHarvestBg, autoHarvestKnob, autoHarvestBtn = makeToggleRow("Auto Harvest")
 
-    -- Statusbar
     local statusbar = Instance.new("Frame")
     statusbar.Size = UDim2.new(1, 0, 0, 20)
     statusbar.Position = UDim2.new(0, 0, 1, -20)
@@ -232,7 +228,7 @@ local function setDot(on)
     dot.BackgroundColor3 = on and Color3.fromRGB(59, 109, 17) or Color3.fromRGB(80, 80, 80)
 end
 
-local FULL_HEIGHT  = 340
+local FULL_HEIGHT = 340
 local COLLAPSED_HEIGHT = 52
 local collapsed = false
 
@@ -294,20 +290,51 @@ closeBtn.MouseButton1Click:Connect(function()
 end)
 
 -- ===================== HELPERS =====================
+-- Teleport + doppio fire con retry se il button esiste ancora
 local function teleportAndTouch(part, label)
+    if not part or not part.Parent then
+        setStatus("Skip (già comprato?): " .. label)
+        task.wait(0.1)
+        return
+    end
     local hrp = localPlayer.Character and localPlayer.Character:FindFirstChild("HumanoidRootPart")
-    if not hrp then setStatus("No HumanoidRootPart!") return end
+    if not hrp then
+        setStatus("No HRP!")
+        task.wait(0.5)
+        return
+    end
+
     setStatus("Buying: " .. label)
-    hrp.CFrame = part.CFrame + Vector3.new(0, 5, 0)
-    task.wait(0.5)
+
+    -- Teleport diretto sulla posizione del button
+    hrp.CFrame = CFrame.new(part.Position + Vector3.new(0, 4, 0))
+    task.wait(0.15) -- attesa ridotta, solo per far stabilizzare la CFrame
+
+    -- Primo fire (touch on)
     firetouchinterest(hrp, part, 0)
-    task.wait(0.1)
+    task.wait(0.05)
+    -- Touch off
     firetouchinterest(hrp, part, 1)
-    task.wait(1)
+    task.wait(0.15)
+
+    -- Retry: se il part esiste ancora (non è stato distrutto dal server = acquisto ok)
+    -- rifacciamo il fire una seconda volta per sicurezza
+    if part and part.Parent then
+        firetouchinterest(hrp, part, 0)
+        task.wait(0.05)
+        firetouchinterest(hrp, part, 1)
+        task.wait(0.15)
+    end
+
+    -- Pausa minima tra un button e l'altro
+    task.wait(0.3)
 end
 
+-- Esegue gli step in sequenza, bloccante, nessun task.spawn
 local function runSteps(steps)
-    for _, step in ipairs(steps) do pcall(step) end
+    for _, step in ipairs(steps) do
+        pcall(step)
+    end
 end
 
 local isRunning = false
@@ -500,9 +527,8 @@ local function stepsRepublic()
         function() teleportAndTouch(T.Purchases["Lemon Republic"].Buttons.Structure["Republic Courtyard"].Button, "Republic Courtyard") end,
         function() teleportAndTouch(T.Purchases["Lemon Republic"].Buttons.Multiplier["National Monument"].Button, "National Monument") end,
         function() teleportAndTouch(T.Purchases["Lemon Republic"].Buttons.Structure["Republic Floor 2 Staircase 2"].Button, "Republic Floor 2 Staircase 2") end,
-        function() teleportAndTouch(T.Purchases["Lemon Republic"].Buttons.Structure["Republic Floor 3"].Button, "Republic Floor 3") end,
-        function() teleportAndTouch(T.Purchases["Lemon Republic"].Buttons.Multiplier["Automatic Voting"].Button, "Automatic Voting") end,
         function() teleportAndTouch(T.Purchases["Lemon Republic"].Buttons.Structure["Republic Floor 2 Right"].Button, "Republic Floor 2 Right") end,
+        function() teleportAndTouch(T.Purchases["Lemon Republic"].Buttons.Multiplier["Automatic Voting"].Button, "Automatic Voting") end,
         function() teleportAndTouch(T.Purchases["Lemon Republic"].Buttons.Structure["Republic Building 1"].Button, "Republic Building 1") end,
         function() teleportAndTouch(T.Purchases["Lemon Republic"].Buttons.Structure["Republic Building 2"].Button, "Republic Building 2") end,
         function() teleportAndTouch(T.Purchases["Lemon Republic"].Buttons.Structure["Republic Utility Lot"].Button, "Republic Utility Lot") end,
@@ -511,6 +537,7 @@ local function stepsRepublic()
         function() teleportAndTouch(T.Purchases["Lemon Republic"].Buttons.Multiplier["Lifelong Terms"].Button, "Lifelong Terms") end,
         function() teleportAndTouch(T.Purchases["Lemon Republic"].Buttons.Structure["Republic Floor 2 Walls"].Button, "Republic Floor 2 Walls") end,
         function() teleportAndTouch(T.Purchases["Lemon Republic"].Buttons.Structure["Republic Floor 3 Staircase 1"].Button, "Republic Floor 3 Staircase 1") end,
+        function() teleportAndTouch(T.Purchases["Lemon Republic"].Buttons.Structure["Republic Floor 3"].Button, "Republic Floor 3") end,
         function() teleportAndTouch(T.Purchases["Lemon Republic"].Buttons.Multiplier["Centralized Power"].Button, "Centralized Power") end,
         function() teleportAndTouch(T.Purchases["Lemon Republic"].Buttons.Structure["Republic Rear Pillar 1"].Button, "Republic Rear Pillar 1") end,
         function() teleportAndTouch(T.Purchases["Lemon Republic"].Buttons.Structure["Republic Rear Pillar 2"].Button, "Republic Rear Pillar 2") end,
@@ -571,10 +598,12 @@ local function stepsLemonX()
 end
 
 -- ===================== COMPLETE ALL =====================
+-- Ogni sezione è bloccante: LemonX parte solo dopo che Republic è finito al 100%
 completeAllBtn.MouseButton1Click:Connect(function()
     if isRunning then return end
     isRunning = true
     setDot(true)
+
     local all = {
         { stepsStand,    "Lemon Stand"    },
         { stepsDash,     "Lemon Dash"     },
@@ -585,11 +614,19 @@ completeAllBtn.MouseButton1Click:Connect(function()
         { stepsRepublic, "Lemon Republic" },
         { stepsLemonX,   "LemonX"         },
     }
+
     for _, entry in ipairs(all) do
-        setStatus("▶ " .. entry[2])
-        runSteps(entry[1]())
+        local stepsFn, name = entry[1], entry[2]
+        setStatus("▶ " .. name)
+        -- runSteps è sincrono, non ritorna finché tutti gli step non sono completati
+        runSteps(stepsFn())
+        -- pausa esplicita tra una sezione e l'altra per far "respirare" il server
+        task.wait(1.5)
+        setStatus("✓ " .. name .. " done")
+        task.wait(0.3)
     end
-    setStatus("All Done!")
+
+    setStatus("✓ All Done!")
     setDot(false)
     task.wait(2)
     setStatus("")
